@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.penguin.thebooklore.ui.notifications.NotificationsViewModel" />
+            type="com.penguin.thebooklore.viewmodel.NotificationsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
