@@ -22,6 +22,7 @@ android {
 
             // should correspond to key/value pairs inside the file
             buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
+            buildConfigField("String", "BASE_URL", "\"https://www.rijksmuseum.nl/api/\"")
         }
 
     }
@@ -49,8 +50,16 @@ dependencies {
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
 
     // glide for image
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:2.1.13"
+
+    // RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
 }
