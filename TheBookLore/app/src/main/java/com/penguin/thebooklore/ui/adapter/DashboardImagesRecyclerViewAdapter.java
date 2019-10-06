@@ -19,10 +19,10 @@ import java.util.List;
 
 public class DashboardImagesRecyclerViewAdapter extends RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder> {
 
-    private List<WebImage> listImages;
+    private List<String> listImages;
     private Context context;
 
-    public DashboardImagesRecyclerViewAdapter(List<WebImage> listImages, Context context) {
+    public DashboardImagesRecyclerViewAdapter(Context context, List<String> listImages) {
         this.listImages = listImages;
         this.context = context;
     }
@@ -37,8 +37,8 @@ public class DashboardImagesRecyclerViewAdapter extends RecyclerView.Adapter<Das
 
     @Override
     public void onBindViewHolder(@NonNull DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder holder, int position) {
-        WebImage image = listImages.get(position);
-        holder.bind(image);
+        String imageUrl = listImages.get(position);
+        holder.bind(imageUrl);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class DashboardImagesRecyclerViewAdapter extends RecyclerView.Adapter<Das
             this.binding = binding;
         }
 
-        public void bind(Object image) {
-            binding.setVariable(BR.image, image);
+        public void bind(Object imageUrl) {
+            binding.setVariable(BR.imageUrl, imageUrl);
             binding.executePendingBindings();
         }
 

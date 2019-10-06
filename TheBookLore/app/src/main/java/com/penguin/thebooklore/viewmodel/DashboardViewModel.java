@@ -1,13 +1,19 @@
 package com.penguin.thebooklore.viewmodel;
 
+import android.icu.util.LocaleData;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.penguin.thebooklore.model.ArtObject;
+import com.penguin.thebooklore.model.WebImage;
 import com.penguin.thebooklore.repository.CollectionRepository;
 import com.penguin.thebooklore.repository.network.model.CollectionResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -19,22 +25,26 @@ import io.reactivex.schedulers.Schedulers;
 public class DashboardViewModel extends ViewModel {
 
     private static final String TAG = DashboardViewModel.class.getSimpleName();
-
-    private MutableLiveData<String> mText = new MutableLiveData<>();
     private CollectionRepository repository;
+    private MutableLiveData<List<ArtObject>> listArtObjects = new MutableLiveData<>();
+    private MutableLiveData<List<String>> listImages = new MutableLiveData<>();
 
-    public MutableLiveData<String> getText() {
-        return mText;
+    public MutableLiveData<List<ArtObject>> getListArtObjects() {
+        return listArtObjects;
+    }
+    public MutableLiveData<List<String>> getListImages() {
+        return listImages;
     }
 
     public DashboardViewModel() {
         repository = CollectionRepository.getInstance();
 
-        mText.setValue("This is dashboard fragment");
         getCollection();
     }
 
-    public void getCollection() {
+    private void getCollection() {
+        final ArrayList<ArtObject> artObjectArrayList = new ArrayList<>();
+        ArrayList<String> webImages = new ArrayList<>();
 
         repository.getCollection()
                 .subscribeOn(Schedulers.io())
@@ -42,20 +52,31 @@ public class DashboardViewModel extends ViewModel {
                 .subscribe(new SingleObserver<CollectionResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "Subscribed");
+                        Log.d(TAG, "Subscribed! Need to treat disposables.");
                     }
 
                     @Override
                     public void onSuccess(CollectionResponse collectionResponse) {
-                        Log.d(TAG, "Completed!");
-                        Log.d(TAG, collectionResponse.getArtObjects().get(0).getWebImage().getUrl());
+                        listArtObjects.setValue(collectionResponse.getArtObjects());
+                        Log.d(TAG, "Success!");
+
+
+                        for (ArtObject artObject : listArtObjects.getValue()) {
+                            webImages.add(artObject.getWebImage().getUrl());
+                        }
+
+//        listArtObjects.setValue(artObjectArrayList);
+                        listImages.setValue(webImages);
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d(TAG, "SHITE");
                         Log.d(TAG, e.getMessage());
                     }
                 });
+
 
 
     }
