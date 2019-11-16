@@ -7,12 +7,8 @@ import com.penguin.thebooklore.repository.network.model.CollectionResponse
 import io.reactivex.Single
 
 object CollectionRepository : ICollectionRepository {
-    private val listArtObjects = MutableLiveData<List<ArtObject>>()
+    override val collection: Single<CollectionResponse>
+        get() = RetrofitHelper.collection
+
     private val TAG = CollectionRepository::class.java.simpleName
-
-
-    override fun getCollection(): Single<CollectionResponse> {
-        return RetrofitHelper.getInstance().collection
-    }
-
 }
