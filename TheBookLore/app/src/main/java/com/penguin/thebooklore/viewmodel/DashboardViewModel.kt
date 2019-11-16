@@ -24,13 +24,14 @@ import io.reactivex.schedulers.Schedulers
 class DashboardViewModel : ViewModel() {
     val listArtObjects = MutableLiveData<List<ArtObject>>()
     val listImages = MutableLiveData<List<String>>()
+    private val collectionRepository: CollectionRepository = CollectionRepository
 
     init {
         getCollection()
     }
 
     private fun getCollection() {
-        CollectionRepository.collection
+        collectionRepository.collection
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<CollectionResponse> {
