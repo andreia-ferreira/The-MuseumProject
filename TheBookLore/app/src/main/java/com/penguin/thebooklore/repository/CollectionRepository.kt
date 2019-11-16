@@ -7,8 +7,9 @@ import com.penguin.thebooklore.repository.network.model.CollectionResponse
 import io.reactivex.Single
 
 object CollectionRepository : ICollectionRepository {
-    override val collection: Single<CollectionResponse>
-        get() = RetrofitHelper.collection
+    override fun getCollection(type: String, ps: Int, p: Int): Single<CollectionResponse> {
+        return RetrofitHelper.getCollection(type, ps, p)
+    }
 
     private val TAG = CollectionRepository::class.java.simpleName
 }

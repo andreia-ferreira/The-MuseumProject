@@ -1,9 +1,7 @@
 package com.penguin.thebooklore.ui.adapter
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.library.baseAdapters.BR
@@ -11,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.RecyclerItemDashboardImageBinding
-import com.penguin.thebooklore.model.WebImage
+import com.penguin.thebooklore.model.ArtObject
 
-class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listImages: List<String>?) : RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {
+class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listArtObject: List<ArtObject>) : RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {
 
     lateinit var binding: RecyclerItemDashboardImageBinding
 
@@ -27,19 +25,21 @@ class DashboardImagesRecyclerViewAdapter(private val context: Context, private v
     }
 
     override fun onBindViewHolder(holder: DashboardImageViewHolder, position: Int) {
-        val imageUrl = listImages!![position]
-        holder.bind(imageUrl)
+        val imageUrl = listArtObject[position].webImage?.url ?: ""
+        val title = listArtObject[position].title ?: "Unknown Title"
+        holder.bind(imageUrl, title)
     }
 
     override fun getItemCount(): Int {
-        return listImages?.size ?: 0
+        return listArtObject.size
     }
 
 
-    inner class DashboardImageViewHolder(var binding: RecyclerItemDashboardImageBinding) : RecyclerView.ViewHolder(binding.getRoot()) {
+    inner class DashboardImageViewHolder(var binding: RecyclerItemDashboardImageBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(imageUrl: Any) {
+        fun bind(imageUrl: String, title: String) {
             binding.setVariable(BR.imageUrl, imageUrl)
+            binding.setVariable(BR.title, title)
             binding.executePendingBindings()
         }
 

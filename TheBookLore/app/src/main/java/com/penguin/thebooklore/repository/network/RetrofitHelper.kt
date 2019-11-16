@@ -6,6 +6,7 @@ import com.penguin.thebooklore.repository.network.model.CollectionResponse
 import java.util.concurrent.TimeUnit
 
 import io.reactivex.Single
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,8 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitHelper {
 
-    val collection: Single<CollectionResponse>
-        get() = client.collection
+    fun getCollection(type: String, ps: Int, p: Int) = client.getCollection(BuildConfig.API_KEY, type, ps, p)
 
     private val client: IRetrofitClient
         get() {
@@ -27,6 +27,12 @@ object RetrofitHelper {
                     .addInterceptor(interceptor)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor { chain ->
+                        val newRequest = chain.request().newBuilder()
+                                .addHeader("Accept", "application/json")
+                                .build()
+                        chain.proceed(newRequest)
+                    }
                     .build()
 
             val retrofit = Retrofit.Builder()

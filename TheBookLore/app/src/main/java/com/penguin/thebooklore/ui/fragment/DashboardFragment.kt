@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
+import com.penguin.thebooklore.model.ArtObject
 import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
 import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*
@@ -21,7 +22,7 @@ class DashboardFragment : Fragment() {
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private lateinit var binding: FragmentDashboardBinding
 
-    private val imageList = ArrayList<String>()
+    private val artObjectsList = ArrayList<ArtObject>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var mAdapter: RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -36,7 +37,7 @@ class DashboardFragment : Fragment() {
         initObservers()
 
         recyclerView =  binding.root.findViewById(R.id.recycler_collection) as RecyclerView
-        mAdapter = DashboardImagesRecyclerViewAdapter(context!!, imageList)
+        mAdapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList)
         layoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = mAdapter
@@ -46,9 +47,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initObservers() {
-        dashboardViewModel.listImages.observe(this, Observer { list ->
-            imageList.clear()
-            imageList.addAll(list)
+        dashboardViewModel.listArtObjects.observe(this, Observer { list ->
+            artObjectsList.clear()
+            artObjectsList.addAll(list)
             mAdapter.notifyDataSetChanged()
         })
     }

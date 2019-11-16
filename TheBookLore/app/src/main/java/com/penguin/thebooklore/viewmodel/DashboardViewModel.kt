@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.penguin.thebooklore.BuildConfig
 
 import com.penguin.thebooklore.model.ArtObject
 import com.penguin.thebooklore.model.WebImage
@@ -31,7 +32,7 @@ class DashboardViewModel : ViewModel() {
     }
 
     private fun getCollection() {
-        collectionRepository.collection
+        collectionRepository.getCollection("painting", 10, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<CollectionResponse> {

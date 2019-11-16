@@ -5,10 +5,15 @@ import com.penguin.thebooklore.repository.network.model.CollectionResponse
 
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface IRetrofitClient {
 
-    @get:GET("en/collection?key=nX9svdcW&format=json&involvedMaker=Rembrandt+van+Rijn&ps=10&p=1&type=painting")
-    val collection: Single<CollectionResponse>
+    @GET("en/collection")
+    fun getCollection(@Query("key") key: String,
+                      @Query("type") type: String,
+                      @Query("ps") resultsPerPage: Int,
+                      @Query("p") page: Int)
+            : Single<CollectionResponse>
 
 }

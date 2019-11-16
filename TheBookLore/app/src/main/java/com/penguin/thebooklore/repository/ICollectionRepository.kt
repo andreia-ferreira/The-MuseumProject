@@ -6,5 +6,5 @@ import com.penguin.thebooklore.repository.network.model.CollectionResponse
 import io.reactivex.Single
 
 interface ICollectionRepository {
-    val collection: Single<CollectionResponse>
+    fun getCollection(type: String, ps: Int, p: Int): Single<CollectionResponse>
 }
