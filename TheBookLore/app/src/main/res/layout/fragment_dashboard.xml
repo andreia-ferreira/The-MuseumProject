@@ -7,6 +7,15 @@
         <variable
             name="viewmodel"
             type="com.penguin.thebooklore.viewmodel.DashboardViewModel" />
+
+        <variable
+            name="layoutManager"
+            type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
+
+        <variable
+            name="adapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
     </data>
 
     <LinearLayout
@@ -17,7 +26,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_collection"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            layoutManager="@{layoutManager}"
+            adapter="@{adapter}"/>
 
     </LinearLayout>
 

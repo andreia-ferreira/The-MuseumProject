@@ -21,11 +21,7 @@ class DashboardFragment : Fragment() {
 
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private lateinit var binding: FragmentDashboardBinding
-
     private val artObjectsList = ArrayList<ArtObject>()
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var mAdapter: RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>
-    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,14 +29,10 @@ class DashboardFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dashboardViewModel
+        binding.layoutManager = GridLayoutManager(context, 2)
+        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList)
 
         initObservers()
-
-        recyclerView =  binding.root.findViewById(R.id.recycler_collection) as RecyclerView
-        mAdapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList)
-        layoutManager = GridLayoutManager(context, 2)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = mAdapter
 
         return binding.root
 
@@ -50,7 +42,7 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.listArtObjects.observe(this, Observer { list ->
             artObjectsList.clear()
             artObjectsList.addAll(list)
-            mAdapter.notifyDataSetChanged()
+            binding.adapter!!.notifyDataSetChanged()
         })
     }
 
