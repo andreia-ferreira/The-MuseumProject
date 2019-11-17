@@ -15,13 +15,12 @@ import androidx.navigation.ui.NavigationUI
 
 class PublicActivity : AppCompatActivity() {
 
-    private var binding: ActivityMainBinding? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding!!.lifecycleOwner = this
-
+        binding.lifecycleOwner = this
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         // Passing each menu ID as a set of Ids because each

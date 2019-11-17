@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
 import com.penguin.thebooklore.model.ArtObject
@@ -17,7 +16,7 @@ import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
 import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private lateinit var binding: FragmentDashboardBinding
@@ -44,6 +43,17 @@ class DashboardFragment : Fragment() {
             artObjectsList.addAll(list)
             binding.adapter!!.notifyDataSetChanged()
         })
+
+        dashboardViewModel.isError.observe(this, Observer {exception ->
+            exception?.message?.run{
+                doOnError(this)
+            }
+        })
     }
 
+    override fun onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu()
+        if (dashboardViewModel.listArtObjects.hasObservers()) dashboardViewModel.listArtObjects.removeObservers(viewLifecycleOwner)
+        if (dashboardViewModel.isError.hasObservers()) dashboardViewModel.isError.removeObservers(viewLifecycleOwner)
+    }
 }
