@@ -11,7 +11,8 @@ import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.RecyclerItemDashboardImageBinding
 import com.penguin.thebooklore.model.ArtObject
 
-class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listArtObject: List<ArtObject>) : RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {
+class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listArtObject: List<ArtObject>, private val clickListenerOpenArtDetail: (ArtObject) -> Unit):
+        RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {
 
     lateinit var binding: RecyclerItemDashboardImageBinding
 
@@ -25,9 +26,7 @@ class DashboardImagesRecyclerViewAdapter(private val context: Context, private v
     }
 
     override fun onBindViewHolder(holder: DashboardImageViewHolder, position: Int) {
-        val imageUrl = listArtObject[position].webImage?.url ?: ""
-        val title = listArtObject[position].title ?: "Unknown Title"
-        holder.bind(imageUrl, title)
+        holder.bind(listArtObject[position], clickListenerOpenArtDetail)
     }
 
     override fun getItemCount(): Int {
@@ -37,9 +36,9 @@ class DashboardImagesRecyclerViewAdapter(private val context: Context, private v
 
     inner class DashboardImageViewHolder(var binding: RecyclerItemDashboardImageBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(imageUrl: String, title: String) {
-            binding.setVariable(BR.imageUrl, imageUrl)
-            binding.setVariable(BR.title, title)
+        fun bind(artObject: ArtObject, clickListener: (ArtObject) -> Unit) {
+            binding.setVariable(BR.artObject, artObject)
+            binding.setOnClickListenerOpenDetailArtObject { clickListener(artObject) }
             binding.executePendingBindings()
         }
 

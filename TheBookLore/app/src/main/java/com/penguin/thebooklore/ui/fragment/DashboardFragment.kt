@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,7 +17,7 @@ import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
 import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*
 
-class DashboardFragment : BaseFragment() {
+class DashboardFragment : Fragment() {
 
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private lateinit var binding: FragmentDashboardBinding
@@ -29,12 +30,16 @@ class DashboardFragment : BaseFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dashboardViewModel
         binding.layoutManager = GridLayoutManager(context, 2)
-        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList)
+        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList) { artObject: ArtObject ->  onClickArtObject(artObject)}
 
         initObservers()
 
         return binding.root
 
+    }
+
+    private fun onClickArtObject(artObject: ArtObject) {
+        Toast.makeText(context, "Open Sesame, ${artObject.title}", Toast.LENGTH_LONG).show()
     }
 
     private fun initObservers() {
@@ -46,7 +51,7 @@ class DashboardFragment : BaseFragment() {
 
         dashboardViewModel.isError.observe(this, Observer {exception ->
             exception?.message?.run{
-                doOnError(this)
+                Toast.makeText(context, this, Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -56,4 +61,5 @@ class DashboardFragment : BaseFragment() {
         if (dashboardViewModel.listArtObjects.hasObservers()) dashboardViewModel.listArtObjects.removeObservers(viewLifecycleOwner)
         if (dashboardViewModel.isError.hasObservers()) dashboardViewModel.isError.removeObservers(viewLifecycleOwner)
     }
+
 }
