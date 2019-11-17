@@ -17,4 +17,10 @@ object RecyclerViewBinding {
         recyclerView.adapter = adapter
     }
 
+    @JvmStatic
+    @BindingAdapter("scrollListener")
+    fun setScrollListener(recyclerView: RecyclerView, scrollListener: RecyclerView.OnScrollListener) {
+        recyclerView.addOnScrollListener(scrollListener)
+    }
+
 }

@@ -1,12 +1,12 @@
-package com.penguin.thebooklore.model
+package com.penguin.thebooklore.repository.network.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class ArtObject {
+class NetworkArtObject {
     @SerializedName("links")
     @Expose
-    var links: HeaderImage? = null
+    var links: NetworkHeaderImage? = null
     @SerializedName("id")
     @Expose
     var id: String? = null
@@ -33,10 +33,10 @@ class ArtObject {
     var permitDownload: Boolean? = null
     @SerializedName("webImage")
     @Expose
-    var webImage: WebImage? = null
+    var networkWebImage: NetworkWebImage? = null
     @SerializedName("headerImage")
     @Expose
-    var headerImage: HeaderImage? = null
+    var networkHeaderImage: NetworkHeaderImage? = null
     @SerializedName("productionPlaces")
     @Expose
     var productionPlaces: List<String>? = null

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
-import com.penguin.thebooklore.model.ArtObject
+import com.penguin.thebooklore.repository.network.model.NetworkArtObject
 import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
 import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*
@@ -21,7 +21,8 @@ class DashboardFragment : Fragment() {
 
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private lateinit var binding: FragmentDashboardBinding
-    private val artObjectsList = ArrayList<ArtObject>()
+    private val artObjectsList = ArrayList<NetworkArtObject>()
+    private val layoutManager by lazy { GridLayoutManager(context, 2) }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,8 +30,8 @@ class DashboardFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dashboardViewModel
-        binding.layoutManager = GridLayoutManager(context, 2)
-        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList) { artObject: ArtObject ->  onClickArtObject(artObject)}
+        binding.layoutManager = layoutManager
+        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList) { networkArtObject: NetworkArtObject ->  onClickArtObject(networkArtObject)}
 
         initObservers()
 
@@ -38,8 +39,8 @@ class DashboardFragment : Fragment() {
 
     }
 
-    private fun onClickArtObject(artObject: ArtObject) {
-        Toast.makeText(context, "Open Sesame, ${artObject.title}", Toast.LENGTH_LONG).show()
+    private fun onClickArtObject(networkArtObject: NetworkArtObject) {
+        Toast.makeText(context, "Open Sesame, ${networkArtObject.title}", Toast.LENGTH_LONG).show()
     }
 
     private fun initObservers() {

@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.RecyclerItemDashboardImageBinding
-import com.penguin.thebooklore.model.ArtObject
+import com.penguin.thebooklore.repository.network.model.NetworkArtObject
 
-class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listArtObject: List<ArtObject>, private val clickListenerOpenArtDetail: (ArtObject) -> Unit):
+class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listNetworkArtObject: List<NetworkArtObject>, private val clickListenerOpenArtDetail: (NetworkArtObject) -> Unit):
         RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {
 
     lateinit var binding: RecyclerItemDashboardImageBinding
@@ -26,19 +26,19 @@ class DashboardImagesRecyclerViewAdapter(private val context: Context, private v
     }
 
     override fun onBindViewHolder(holder: DashboardImageViewHolder, position: Int) {
-        holder.bind(listArtObject[position], clickListenerOpenArtDetail)
+        holder.bind(listNetworkArtObject[position], clickListenerOpenArtDetail)
     }
 
     override fun getItemCount(): Int {
-        return listArtObject.size
+        return listNetworkArtObject.size
     }
 
 
     inner class DashboardImageViewHolder(var binding: RecyclerItemDashboardImageBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(artObject: ArtObject, clickListener: (ArtObject) -> Unit) {
-            binding.setVariable(BR.artObject, artObject)
-            binding.setOnClickListenerOpenDetailArtObject { clickListener(artObject) }
+        fun bind(networkArtObject: NetworkArtObject, clickListener: (NetworkArtObject) -> Unit) {
+            binding.setVariable(BR.networkArtObject, networkArtObject)
+            binding.setOnClickListenerOpenDetailArtObject { clickListener(networkArtObject) }
             binding.executePendingBindings()
         }
 

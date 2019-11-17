@@ -1,4 +1,10 @@
 package com.penguin.thebooklore.model
 
-class ArtObject {
-}
+import com.penguin.thebooklore.repository.network.model.NetworkWebImage
+
+data class ArtObject(
+    val id: String,
+    val title: String,
+    val hasImage: Boolean,
+    val imageUrl: String?
+)

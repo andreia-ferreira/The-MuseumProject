@@ -10,9 +10,11 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val compositeDisposable = CompositeDisposable()
     val isError = MutableLiveData<Exception>()
+    val isLoading = MutableLiveData<Boolean>()
 
     init {
         isError.value = null
+        isLoading.value = false
     }
 
     fun addDisposable(disposable: Disposable) {

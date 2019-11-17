@@ -1,9 +1,9 @@
-package com.penguin.thebooklore.model
+package com.penguin.thebooklore.repository.network.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class WebImage {
+class NetworkWebImage {
     @SerializedName("guid")
     @Expose
     var guid: String? = null
