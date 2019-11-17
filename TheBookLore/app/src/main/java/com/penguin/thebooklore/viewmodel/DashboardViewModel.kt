@@ -1,8 +1,10 @@
 package com.penguin.thebooklore.viewmodel
 
+import android.app.Application
 import android.util.Log
 
 import androidx.lifecycle.MutableLiveData
+import com.penguin.thebooklore.R
 
 import com.penguin.thebooklore.model.ArtObject
 import com.penguin.thebooklore.repository.CollectionRepository
@@ -12,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 
-class DashboardViewModel : BaseViewModel() {
+class DashboardViewModel(application: Application) : BaseViewModel(application) {
     val listArtObjects = MutableLiveData<List<ArtObject>>()
     private val collectionRepository: CollectionRepository = CollectionRepository
 
@@ -39,11 +41,11 @@ class DashboardViewModel : BaseViewModel() {
             }
 
         }
-        isError.value = Exception("No art objects were found")
+        isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_empty_search))
     }
 
     private fun onError(e: Throwable) {
-        isError.value = Exception("There was an error while fetching the results.\n Please try again later")
+        isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_service_call))
         e.printStackTrace()
         e.message?.let {
             Log.d(TAG, it)

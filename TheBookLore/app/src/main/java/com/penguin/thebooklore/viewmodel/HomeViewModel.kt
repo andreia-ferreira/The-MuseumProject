@@ -1,10 +1,11 @@
 package com.penguin.thebooklore.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : BaseViewModel() {
+class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     val text = MutableLiveData<String>()
 
