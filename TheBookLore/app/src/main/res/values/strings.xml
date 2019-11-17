@@ -8,4 +8,7 @@
         Please try again later.</string>
     <string name="error_empty_search">No art objects were found.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
