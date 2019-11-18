@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
-import com.penguin.thebooklore.repository.network.model.NetworkArtObject
+import com.penguin.thebooklore.model.networkModel.NetworkArtObject
 import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
 import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*

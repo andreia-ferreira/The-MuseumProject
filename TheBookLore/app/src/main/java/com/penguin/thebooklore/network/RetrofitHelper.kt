@@ -1,12 +1,9 @@
-package com.penguin.thebooklore.repository.network
+package com.penguin.thebooklore.network
 
 import com.penguin.thebooklore.BuildConfig
-import com.penguin.thebooklore.repository.network.model.CollectionResponse
 
 import java.util.concurrent.TimeUnit
 
-import io.reactivex.Single
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

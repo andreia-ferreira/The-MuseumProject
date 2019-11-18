@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.RecyclerItemDashboardImageBinding
-import com.penguin.thebooklore.repository.network.model.NetworkArtObject
+import com.penguin.thebooklore.model.networkModel.NetworkArtObject
 
 class DashboardImagesRecyclerViewAdapter(private val context: Context, private val listNetworkArtObject: List<NetworkArtObject>, private val clickListenerOpenArtDetail: (NetworkArtObject) -> Unit):
         RecyclerView.Adapter<DashboardImagesRecyclerViewAdapter.DashboardImageViewHolder>() {

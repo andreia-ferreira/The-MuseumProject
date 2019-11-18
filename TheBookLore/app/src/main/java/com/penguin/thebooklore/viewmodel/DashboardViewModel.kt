@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.penguin.thebooklore.R
 
-import com.penguin.thebooklore.repository.network.model.NetworkArtObject
+import com.penguin.thebooklore.model.networkModel.NetworkArtObject
 import com.penguin.thebooklore.repository.CollectionRepository
-import com.penguin.thebooklore.repository.network.model.CollectionResponse
+import com.penguin.thebooklore.model.networkModel.CollectionResponse
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

@@ -9,11 +9,11 @@
         <import type="kotlin.jvm.functions.Function1"/>
         <variable
             name="networkArtObject"
-            type="com.penguin.thebooklore.repository.network.model.NetworkArtObject" />
+            type="com.penguin.thebooklore.model.networkModel.NetworkArtObject" />
 
         <variable
             name="onClickListenerOpenDetailArtObject"
-            type="Function1&lt;com.penguin.thebooklore.repository.network.model.NetworkArtObject, Unit&gt;" />
+            type="Function1&lt;com.penguin.thebooklore.model.networkModel.NetworkArtObject, Unit&gt;" />
 
     </data>
 

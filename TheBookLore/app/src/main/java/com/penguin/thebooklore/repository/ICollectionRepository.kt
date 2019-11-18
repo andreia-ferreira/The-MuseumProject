@@ -1,6 +1,6 @@
 package com.penguin.thebooklore.repository
 
-import com.penguin.thebooklore.repository.network.model.CollectionResponse
+import com.penguin.thebooklore.model.networkModel.CollectionResponse
 
 import io.reactivex.Single
 

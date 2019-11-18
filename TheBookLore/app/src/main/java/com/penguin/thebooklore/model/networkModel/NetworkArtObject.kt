@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.repository.network.model
+package com.penguin.thebooklore.model.networkModel
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
