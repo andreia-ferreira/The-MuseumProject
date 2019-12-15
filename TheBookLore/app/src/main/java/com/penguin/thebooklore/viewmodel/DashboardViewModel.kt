@@ -4,14 +4,14 @@ import android.app.Application
 import android.util.Log
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.penguin.thebooklore.R
 
 import com.penguin.thebooklore.model.networkModel.NetworkArtObject
 import com.penguin.thebooklore.repository.CollectionRepository
 import com.penguin.thebooklore.model.networkModel.CollectionResponse
+import kotlinx.coroutines.launch
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 
 class DashboardViewModel(application: Application) : BaseViewModel(application) {
@@ -25,38 +25,30 @@ class DashboardViewModel(application: Application) : BaseViewModel(application) 
 
     fun getCollection() {
         isLoading.value = true
-        val disposable = collectionRepository.getCollection("painting", 10, currentPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccess(it)}, { onError(it)})
-
-        addDisposable(disposable)
+        viewModelScope.launch {
+            try {
+                val collectionResponse = collectionRepository.getCollection("painting", 10, currentPage)
+                processDataResponse(collectionResponse)
+            } catch (e: Exception) {
+                isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_service_call))
+            }
+            isLoading.value = false
+        }
     }
 
-    private fun onSuccess(response: CollectionResponse) {
+    private fun processDataResponse(response: CollectionResponse?) {
         Log.d(TAG, "Success!")
-        response.networkArtObjects?.let { artObjects ->
+        response?.networkArtObjects?.let { artObjects ->
 
             if (artObjects.isNotEmpty()) {
                 Log.d(TAG, "Found " + artObjects.size + " results.")
                 listArtObjects.value = artObjects
                 currentPage ++
-                isLoading.value = false
                 return
             }
 
         }
         isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_empty_search))
-        isLoading.value = false
-    }
-
-    private fun onError(e: Throwable) {
-        isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_service_call))
-        e.printStackTrace()
-        e.message?.let {
-            Log.d(TAG, it)
-        }
-        isLoading.value = false
     }
 
     companion object {

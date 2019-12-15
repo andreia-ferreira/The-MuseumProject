@@ -55,31 +55,38 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+//    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
 
     // glide for image
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
 
-    // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.1.13"
-
-    // RxAndroid
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+//    // RxJava
+//    implementation "io.reactivex.rxjava2:rxjava:2.1.13"
+//
+//    // RxAndroid
+//    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //Paging library for endless scroll
     implementation "androidx.paging:paging-runtime:2.1.0"
+
+    //Kotlin Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1'
+
 }
