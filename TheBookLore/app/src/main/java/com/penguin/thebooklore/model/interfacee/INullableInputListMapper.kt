@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.model.`interface`
+package com.penguin.thebooklore.model.interfacee
 
 interface INullableInputListMapper<I, O>: IMapper<List<I>?,List<O>>
 

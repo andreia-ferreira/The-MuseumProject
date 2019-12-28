@@ -1,5 +1,9 @@
 package com.penguin.thebooklore.model.networkModel
 
-sealed class Result<out T : Any>
-class Success<out T : Any>(val data: T) : Result<T>()
-class Error(private val exception: Throwable, val message: String? = exception.localizedMessage) : Result<Nothing>()
+sealed class Result<T> {
+
+    data class Success<T>(val value: T) : Result<T>()
+
+    data class Failure<T>(val throwable: Throwable) : Result<T>()
+
+}
