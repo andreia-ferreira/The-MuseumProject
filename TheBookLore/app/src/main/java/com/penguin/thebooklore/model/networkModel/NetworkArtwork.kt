@@ -3,7 +3,7 @@ package com.penguin.thebooklore.model.networkModel
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class NetworkArtObject {
+class NetworkArtwork {
     @SerializedName("links")
     @Expose
     var links: NetworkHeaderImage? = null

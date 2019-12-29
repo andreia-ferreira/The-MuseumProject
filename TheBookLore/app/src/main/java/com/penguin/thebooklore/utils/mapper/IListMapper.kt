@@ -1,5 +1,6 @@
-package com.penguin.thebooklore.model.interfacee
+package com.penguin.thebooklore.utils.mapper
 
+// not null to not null
 interface IListMapper<I, O>: IMapper<List<I>, List<O>>
 
 class IListMapperImpl<I, O>(

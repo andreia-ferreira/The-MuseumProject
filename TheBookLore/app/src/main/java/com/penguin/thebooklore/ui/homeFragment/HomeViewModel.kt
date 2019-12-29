@@ -1,9 +1,8 @@
-package com.penguin.thebooklore.viewmodel
+package com.penguin.thebooklore.ui.homeFragment
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.penguin.thebooklore.ui.BaseViewModel
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 

@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.ui.fragment
+package com.penguin.thebooklore.ui.artDetailFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentArtDetailBinding
-import com.penguin.thebooklore.viewmodel.ArtDetailViewModel
 
 class ArtDetailFragment : Fragment() {
 

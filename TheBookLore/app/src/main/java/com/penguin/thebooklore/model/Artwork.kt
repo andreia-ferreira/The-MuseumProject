@@ -1,6 +1,6 @@
 package com.penguin.thebooklore.model
 
-data class ArtObject(
+data class Artwork(
     val id: String,
     val title: String,
     val hasImage: Boolean,

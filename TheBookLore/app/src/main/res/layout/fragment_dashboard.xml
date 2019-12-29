@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewmodel"
-            type="com.penguin.thebooklore.viewmodel.DashboardViewModel" />
+            type="com.penguin.thebooklore.ui.dashboardFragment.DashboardViewModel" />
 
         <variable
             name="layoutManager"

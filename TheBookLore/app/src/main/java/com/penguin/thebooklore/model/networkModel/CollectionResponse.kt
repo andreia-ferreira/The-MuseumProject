@@ -7,5 +7,5 @@ class CollectionResponse : DefaultResponse() {
 
     @SerializedName("artObjects")
     @Expose
-    var networkArtObjects: List<NetworkArtObject>? = null
+    var networkArtworks: List<NetworkArtwork>? = null
 }

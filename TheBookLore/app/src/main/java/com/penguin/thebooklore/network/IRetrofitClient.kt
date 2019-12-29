@@ -1,8 +1,6 @@
 package com.penguin.thebooklore.network
 
 import com.penguin.thebooklore.model.networkModel.CollectionResponse
-import com.penguin.thebooklore.model.networkModel.NetworkArtObject
-import com.penguin.thebooklore.model.networkModel.Result
 
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.viewmodel
+package com.penguin.thebooklore.ui
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

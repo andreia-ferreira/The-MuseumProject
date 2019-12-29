@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.model.interfacee
+package com.penguin.thebooklore.utils.mapper
 
 interface IMapper<I, O> {
     fun map(input: I): O

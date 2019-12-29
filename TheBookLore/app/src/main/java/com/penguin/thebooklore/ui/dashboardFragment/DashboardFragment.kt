@@ -1,5 +1,6 @@
-package com.penguin.thebooklore.ui.fragment
+package com.penguin.thebooklore.ui.dashboardFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,18 +13,22 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
-import com.penguin.thebooklore.model.ArtObject
-import com.penguin.thebooklore.model.networkModel.NetworkArtObject
+import com.penguin.thebooklore.model.Artwork
 import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
-import com.penguin.thebooklore.viewmodel.DashboardViewModel
 import java.util.*
 
 class DashboardFragment : Fragment() {
 
-    private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
+    private lateinit var mContext: Context
     private lateinit var binding: FragmentDashboardBinding
-    private val artObjectsList = ArrayList<ArtObject>()
-    private val layoutManager by lazy { GridLayoutManager(context, 2) }
+    private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
+    private val layoutManager by lazy { GridLayoutManager(mContext, 2) }
+    private val artworkList = ArrayList<Artwork>()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +37,7 @@ class DashboardFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dashboardViewModel
         binding.layoutManager = layoutManager
-        binding.adapter = DashboardImagesRecyclerViewAdapter(context!!, artObjectsList) { artObject: ArtObject ->  onClickArtObject(artObject)}
+        binding.adapter = DashboardImagesRecyclerViewAdapter(mContext, artworkList) { artwork: Artwork ->  onClickArtwork(artwork)}
 
         initObservers()
 
@@ -40,27 +45,27 @@ class DashboardFragment : Fragment() {
 
     }
 
-    private fun onClickArtObject(artObject: ArtObject) {
-        Toast.makeText(context, "Open Sesame, ${artObject.title}", Toast.LENGTH_LONG).show()
+    private fun onClickArtwork(artwork: Artwork) {
+        Toast.makeText(mContext, "Open Sesame, ${artwork.title}", Toast.LENGTH_LONG).show()
     }
 
     private fun initObservers() {
-        dashboardViewModel.listArtObjects.observe(this, Observer { list ->
-            artObjectsList.clear()
-            artObjectsList.addAll(list)
+        dashboardViewModel.listArtwork.observe(this, Observer { list ->
+            artworkList.clear()
+            artworkList.addAll(list)
             binding.adapter!!.notifyDataSetChanged()
         })
 
         dashboardViewModel.isError.observe(this, Observer {exception ->
             exception?.message?.run{
-                Toast.makeText(context, this, Toast.LENGTH_LONG).show()
+                Toast.makeText(mContext, this, Toast.LENGTH_LONG).show()
             }
         })
     }
 
     override fun onDestroyOptionsMenu() {
         super.onDestroyOptionsMenu()
-        if (dashboardViewModel.listArtObjects.hasObservers()) dashboardViewModel.listArtObjects.removeObservers(viewLifecycleOwner)
+        if (dashboardViewModel.listArtwork.hasObservers()) dashboardViewModel.listArtwork.removeObservers(viewLifecycleOwner)
         if (dashboardViewModel.isError.hasObservers()) dashboardViewModel.isError.removeObservers(viewLifecycleOwner)
     }
 

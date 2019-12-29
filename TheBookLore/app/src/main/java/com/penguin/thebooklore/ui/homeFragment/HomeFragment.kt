@@ -1,18 +1,15 @@
-package com.penguin.thebooklore.ui.fragment
+package com.penguin.thebooklore.ui.homeFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentHomeBinding
-import com.penguin.thebooklore.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
 

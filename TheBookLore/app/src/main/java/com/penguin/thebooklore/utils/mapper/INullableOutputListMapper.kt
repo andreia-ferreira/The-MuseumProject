@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.model.interfacee
+package com.penguin.thebooklore.utils.mapper
 
 // Non-nullable to Nullable
 interface NullableOutputListMapper<I, O>: IMapper<List<I>, List<O>?>

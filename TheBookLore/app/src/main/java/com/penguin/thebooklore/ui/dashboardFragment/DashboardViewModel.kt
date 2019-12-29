@@ -1,4 +1,4 @@
-package com.penguin.thebooklore.viewmodel
+package com.penguin.thebooklore.ui.dashboardFragment
 
 import android.app.Application
 import android.util.Log
@@ -6,17 +6,18 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.penguin.thebooklore.R
-import com.penguin.thebooklore.model.ArtObject
+import com.penguin.thebooklore.model.Artwork
 
 import com.penguin.thebooklore.repository.CollectionRepository
 import com.penguin.thebooklore.model.networkModel.Result
+import com.penguin.thebooklore.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 import java.lang.Exception
 
 // injectar repositorio aqui
 class DashboardViewModel(application: Application) : BaseViewModel(application) {
-    val listArtObjects = MutableLiveData<List<ArtObject>>()
+    val listArtwork = MutableLiveData<List<Artwork>>()
     private val collectionRepository: CollectionRepository by lazy { CollectionRepository.getInstance(application) }
     var currentPage = 1
 
@@ -34,17 +35,18 @@ class DashboardViewModel(application: Application) : BaseViewModel(application) 
                 }
 
             } catch (e: Exception) {
+                // replace with generic error one day
                 isError.value = e
             }
             isLoading.value = false
         }
     }
 
-    private fun processDataResponse(response: List<ArtObject>) {
+    private fun processDataResponse(response: List<Artwork>) {
         Log.d(TAG, "Success!")
         if (response.isNotEmpty()) {
             Log.d(TAG, "Found " + response.size + " results.")
-            listArtObjects.value = response
+            listArtwork.value = response
             currentPage ++
             return
         }
