@@ -3,6 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="hint_search">Search</string>
+    <string name="search_title">Search Title</string>
 
     <string name="error_service_call">There was an error while fetching the results.
         Please try again later.</string>

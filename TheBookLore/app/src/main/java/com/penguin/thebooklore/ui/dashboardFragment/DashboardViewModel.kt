@@ -9,7 +9,6 @@ import com.penguin.thebooklore.R
 import com.penguin.thebooklore.model.Artwork
 
 import com.penguin.thebooklore.repository.CollectionRepository
-import com.penguin.thebooklore.model.networkModel.Result
 import com.penguin.thebooklore.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -22,35 +21,35 @@ class DashboardViewModel(application: Application) : BaseViewModel(application) 
     var currentPage = 1
 
     init {
-        getCollection()
+        getCollection("painting")
     }
 
-    private fun getCollection() {
+    fun getCollection(query: String?) {
         isLoading.value = true
         viewModelScope.launch {
+
             try {
-                when (val collectionResponse = collectionRepository.getCollection("painting", 10, currentPage)) {
-                    is Result.Success -> processDataResponse(collectionResponse.value)
-                    is Result.Failure -> throw Exception(collectionResponse.throwable)
-                }
-
+                collectionRepository.getCollection(query ?: "",
+                        currentPage,
+                        10,
+                        { listResponse ->
+                            Log.d(TAG, "Success!")
+                            if (listResponse.isNotEmpty()) {
+                                Log.d(TAG, "Found " + listResponse.size + " results.")
+                                listArtwork.value = listResponse
+                            } else {
+                                isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_empty_search))
+                            }
+                            isLoading.value = false
+                        },
+                        {
+                            isError.value = Exception(it)
+                            isLoading.value = false
+                        })
             } catch (e: Exception) {
-                // replace with generic error one day
                 isError.value = e
-            }
-            isLoading.value = false
-        }
-    }
-
-    private fun processDataResponse(response: List<Artwork>) {
-        Log.d(TAG, "Success!")
-        if (response.isNotEmpty()) {
-            Log.d(TAG, "Found " + response.size + " results.")
-            listArtwork.value = response
-            currentPage ++
-            return
-        }
-        isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_empty_search))
+                isLoading.value = false
+            }}
     }
 
     companion object {

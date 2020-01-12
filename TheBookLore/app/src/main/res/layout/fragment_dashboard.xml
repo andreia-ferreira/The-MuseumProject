@@ -20,6 +20,9 @@
         <variable
             name="scrollListener"
             type="androidx.recyclerview.widget.RecyclerView.OnScrollListener" />
+        <variable
+            name="queryTextListener"
+            type="android.widget.SearchView.OnQueryTextListener" />
 
     </data>
 
@@ -39,13 +42,29 @@
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="@{viewmodel.isLoading() == true ? View.VISIBLE : View.GONE}"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_collection"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            layoutManager="@{layoutManager}"
-            adapter="@{adapter}"
-            android:visibility="@{viewmodel.isLoading() == false ? View.VISIBLE : View.GONE}"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:singleLine="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCollection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layoutManager="@{layoutManager}"
+                adapter="@{adapter}"
+                android:visibility="@{viewmodel.isLoading() == false ? View.VISIBLE : View.GONE}" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

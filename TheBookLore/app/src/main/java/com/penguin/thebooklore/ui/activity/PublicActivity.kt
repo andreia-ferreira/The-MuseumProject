@@ -1,6 +1,10 @@
 package com.penguin.thebooklore.ui.activity
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.widget.SearchView
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.penguin.thebooklore.R
@@ -31,8 +35,5 @@ class PublicActivity : AppCompatActivity() {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
-
-
     }
-
 }

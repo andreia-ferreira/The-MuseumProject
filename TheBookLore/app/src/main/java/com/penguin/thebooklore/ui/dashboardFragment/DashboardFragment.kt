@@ -1,11 +1,11 @@
 package com.penguin.thebooklore.ui.dashboardFragment
 
+import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +24,18 @@ class DashboardFragment : Fragment() {
     private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
     private val layoutManager by lazy { GridLayoutManager(mContext, 2) }
     private val artworkList = ArrayList<Artwork>()
+    private val queryChangeListener by lazy {
+        object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                dashboardViewModel.getCollection(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,7 +50,7 @@ class DashboardFragment : Fragment() {
         binding.viewmodel = dashboardViewModel
         binding.layoutManager = layoutManager
         binding.adapter = DashboardImagesRecyclerViewAdapter(mContext, artworkList) { artwork: Artwork ->  onClickArtwork(artwork)}
-
+        binding.searchBar.setOnQueryTextListener(queryChangeListener)
         initObservers()
 
         return binding.root
@@ -51,9 +63,11 @@ class DashboardFragment : Fragment() {
 
     private fun initObservers() {
         dashboardViewModel.listArtwork.observe(this, Observer { list ->
-            artworkList.clear()
-            artworkList.addAll(list)
-            binding.adapter!!.notifyDataSetChanged()
+            if (list != null) {
+                artworkList.clear()
+                artworkList.addAll(list)
+                binding.adapter?.notifyDataSetChanged()
+            }
         })
 
         dashboardViewModel.isError.observe(this, Observer {exception ->
