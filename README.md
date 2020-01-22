@@ -1,2 +1,2 @@
-# The-BookLore
-Android App using Android Architecture Components and MVVM Architecture
+# The-MuseumProject
+Test App using Android Architecture Components and MVVM Architecture
