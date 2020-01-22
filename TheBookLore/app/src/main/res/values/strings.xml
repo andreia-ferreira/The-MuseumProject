@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">The MuseumProject</string>
+    <string name="title_home">Home</string>
+    <string name="title_collection">Collection</string>
+    <string name="title_profile">Profile</string>
+    <string name="hint_search">Search</string>
+    <string name="search_title">Search Title</string>
+
+    <string name="error_service_call">There was an error while fetching the results.
+        Please try again later.</string>
+    <string name="error_empty_search">No art objects were found.</string>
+    <string name="message_no_artwork_url">This image has no url</string>
+    <string name="message_no_artwork_title">Unknown Title</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
