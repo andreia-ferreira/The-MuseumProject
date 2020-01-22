@@ -8,6 +8,8 @@ import com.penguin.thebooklore.network.RetrofitHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
+// TODO implement paging library
 class RepoBoundaryCallback(private val query: String, private val coroutineScope: CoroutineScope):
         PagedList.BoundaryCallback<NetworkArtwork>() {
 

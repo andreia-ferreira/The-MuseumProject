@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">The BookLore</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_collection">Collection</string>
+    <string name="title_profile">Profile</string>
     <string name="hint_search">Search</string>
     <string name="search_title">Search Title</string>
 

@@ -9,7 +9,7 @@ class NotificationsViewModel(application: Application) : BaseViewModel(applicati
     val text = MutableLiveData<String>()
 
     init {
-        text.value = "This is notifications fragment"
+        text.value = "This is profile fragment"
     }
 
 }
