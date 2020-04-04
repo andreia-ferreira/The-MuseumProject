@@ -2,27 +2,33 @@ package com.penguin.thebooklore.repository
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.paging.PageKeyedDataSource
 import com.penguin.thebooklore.R
+import com.penguin.thebooklore.database.MuseumDao
+import com.penguin.thebooklore.database.MuseumDatabase
 import com.penguin.thebooklore.model.Artwork
 import com.penguin.thebooklore.network.RetrofitHelper
 import com.penguin.thebooklore.utils.mapper.ArtObjectMapper
 
 // injetar retrofit client aqui
 class CollectionRepository private constructor(
-        private val application: Application)
+        private val application: Application,
+        private val museumDao: MuseumDao)
     :   PageKeyedDataSource<Int, Result<List<Artwork>>>() {
 
+    val databaseArtwork: LiveData<List<Artwork>> = museumDao.getArtwork()
 
-    suspend fun getCollection(query: String,
-                              page: Int,
-                              itemsPerPage: Int,
-                              onSuccess: (result: List<Artwork>) -> Unit,
-                              onError: (error: String) -> Unit) {
+    suspend fun refreshCollection(query: String,
+                                  page: Int,
+                                  itemsPerPage: Int,
+                                  onSuccess: (result: List<Artwork>) -> Unit,
+                                  onError: (error: String) -> Unit) {
 
         val response = RetrofitHelper.getCollection(query, itemsPerPage, page)
         if (response.isSuccessful) {
             val mappedObjects = ArtObjectMapper.mapListArtObject(response.body()?.networkArtworks)
+
             onSuccess(mappedObjects)
             return
         }
@@ -30,17 +36,9 @@ class CollectionRepository private constructor(
         onError(application.resources.getString(R.string.error_service_call))
     }
 
-    companion object {
-        // For Singleton instantiation
-        @Volatile
-        private var instance: CollectionRepository? = null
-
-        fun getInstance(application: Application) =
-                instance ?: synchronized(this) {
-                    instance ?: CollectionRepository(application).also { instance = it }
-                }
-
-        private val TAG = CollectionRepository::class.java.simpleName
+    // convert to suspend
+    suspend fun insertArtwork(listArt: List<Artwork>) {
+        museumDao.insertArtwork(listArt)
     }
 
     // TODO implement paging library
@@ -54,6 +52,19 @@ class CollectionRepository private constructor(
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Result<List<Artwork>>>) {
 
+    }
+
+    companion object {
+        private val TAG = CollectionRepository::class.java.simpleName
+
+        // For Singleton instantiation
+        @Volatile
+        private var instance: CollectionRepository? = null
+
+        fun getInstance(application: Application, museumDao: MuseumDao) =
+                instance ?: synchronized(this) {
+                    instance ?: CollectionRepository(application, museumDao).also { instance = it }
+                }
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
 import com.penguin.thebooklore.R
@@ -13,7 +14,7 @@ import com.penguin.thebooklore.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {
 
-    private val notificationsViewModel: NotificationsViewModel by lazy { ViewModelProviders.of(this).get(NotificationsViewModel::class.java) }
+    private val notificationsViewModel: NotificationsViewModel by lazy { ViewModelProvider(this).get(NotificationsViewModel::class.java) }
     private lateinit var binding: FragmentNotificationsBinding
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -24,4 +25,10 @@ class NotificationsFragment : Fragment() {
 
         return binding.root
     }
+
+    companion object {
+        val TAG = NotificationsFragment::class.java.simpleName
+        fun newInstance() = NotificationsFragment()
+    }
+
 }

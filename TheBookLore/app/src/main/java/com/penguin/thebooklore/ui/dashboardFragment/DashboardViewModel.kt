@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.penguin.thebooklore.R
+import com.penguin.thebooklore.database.MuseumDao
+import com.penguin.thebooklore.database.MuseumDatabase
 import com.penguin.thebooklore.model.Artwork
 
 import com.penguin.thebooklore.repository.CollectionRepository
@@ -15,9 +17,10 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 // injectar repositorio aqui
-class DashboardViewModel(application: Application) : BaseViewModel(application) {
+class DashboardViewModel(private val mApplication: Application) : BaseViewModel(mApplication) {
+    private val museumDao : MuseumDao by lazy { MuseumDatabase.getDatabase(mApplication).museumDao() }
+    private val collectionRepository: CollectionRepository by lazy { CollectionRepository.getInstance(mApplication, museumDao) }
     val listArtwork = MutableLiveData<List<Artwork>>()
-    private val collectionRepository: CollectionRepository by lazy { CollectionRepository.getInstance(application) }
     var currentPage = 1
 
     init {
@@ -29,27 +32,41 @@ class DashboardViewModel(application: Application) : BaseViewModel(application) 
         viewModelScope.launch {
 
             try {
-                collectionRepository.getCollection(query ?: "",
+                collectionRepository.refreshCollection(
+                        query ?: "",
                         currentPage,
                         10,
-                        { listResponse ->
-                            Log.d(TAG, "Success!")
-                            if (listResponse.isNotEmpty()) {
-                                Log.d(TAG, "Found " + listResponse.size + " results.")
-                                listArtwork.value = listResponse
-                            } else {
-                                isError.value = Exception(getApplication<Application>().resources.getString(R.string.error_empty_search))
-                            }
-                            isLoading.value = false
-                        },
-                        {
-                            isError.value = Exception(it)
-                            isLoading.value = false
-                        })
+                        { onSuccessGetCollection(it) },
+                        { onError(it) })
             } catch (e: Exception) {
-                isError.value = e
-                isLoading.value = false
+                onError(e.message)
             }}
+    }
+
+    fun insertArtwork(list: List<Artwork>) {
+        viewModelScope.launch {
+            try {
+                collectionRepository.insertArtwork(list)
+            } catch (e: Exception) {
+                onError("Error inserting in database")
+            }
+        }
+    }
+
+    private fun onSuccessGetCollection(listResponse: List<Artwork>) {
+        if (listResponse.isNotEmpty()) {
+            Log.d(TAG, "Found " + listResponse.size + " results.")
+            listArtwork.value = listResponse
+            isLoading.value = false
+            insertArtwork(listResponse)
+            return
+        }
+        onError(mApplication.resources.getString(R.string.error_empty_search))
+    }
+
+    private fun onError(error: String?) {
+        isError.value = Exception(error)
+        isLoading.value = false
     }
 
     companion object {

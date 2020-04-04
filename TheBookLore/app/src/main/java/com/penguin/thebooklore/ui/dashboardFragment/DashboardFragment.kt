@@ -1,15 +1,16 @@
 package com.penguin.thebooklore.ui.dashboardFragment
 
-import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
@@ -21,9 +22,10 @@ class DashboardFragment : Fragment() {
 
     private lateinit var mContext: Context
     private lateinit var binding: FragmentDashboardBinding
-    private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProviders.of(this).get(DashboardViewModel::class.java) }
+    private val dashboardViewModel: DashboardViewModel by lazy { ViewModelProvider(this).get(DashboardViewModel::class.java) }
     private val layoutManager by lazy { GridLayoutManager(mContext, 2) }
     private val artworkList = ArrayList<Artwork>()
+
     private val queryChangeListener by lazy {
         object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -81,6 +83,11 @@ class DashboardFragment : Fragment() {
         super.onDestroyOptionsMenu()
         if (dashboardViewModel.listArtwork.hasObservers()) dashboardViewModel.listArtwork.removeObservers(viewLifecycleOwner)
         if (dashboardViewModel.isError.hasObservers()) dashboardViewModel.isError.removeObservers(viewLifecycleOwner)
+    }
+
+    companion object {
+        val TAG = DashboardFragment::class.java.simpleName
+        fun newInstance() = DashboardFragment()
     }
 
 }

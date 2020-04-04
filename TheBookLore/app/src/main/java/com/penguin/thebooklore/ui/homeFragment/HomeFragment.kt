@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
 import com.penguin.thebooklore.R
@@ -13,7 +14,7 @@ import com.penguin.thebooklore.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
+    private val homeViewModel: HomeViewModel by lazy { ViewModelProvider(this).get(HomeViewModel::class.java) }
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -26,4 +27,10 @@ class HomeFragment : Fragment() {
         return binding.root
 
     }
+
+    companion object {
+        val TAG = HomeFragment::class.java.simpleName
+        fun newInstance() = HomeFragment()
+    }
+
 }
