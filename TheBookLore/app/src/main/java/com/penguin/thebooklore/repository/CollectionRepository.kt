@@ -41,8 +41,8 @@ class CollectionRepository private constructor(
         museumDao.insertArtwork(listArt)
     }
 
-    suspend fun getArtwork(): List<Artwork> {
-        return museumDao.getArtwork()
+    suspend fun getArtwork(searchText: String): List<Artwork> {
+        return museumDao.getArtwork(searchText)
     }
 
     // TODO implement paging library

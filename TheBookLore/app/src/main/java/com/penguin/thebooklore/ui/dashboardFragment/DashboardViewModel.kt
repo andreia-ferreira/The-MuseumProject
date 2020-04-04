@@ -24,13 +24,16 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
     private val localListArtwork = MutableLiveData<List<Artwork>>()
     val listArtwork :LiveData<List<Artwork>> = localListArtwork
     var currentPage = 1
+    private val searchText by lazy { MutableLiveData<String>("painting") }
 
     init {
-        getCollection("painting")
+        getCollection(searchText.value)
     }
 
     fun getCollection(query: String?) {
         isLoading.value = true
+        searchText.value = query
+
         viewModelScope.launch {
 
             try {
@@ -48,6 +51,7 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
     private fun onSuccessGetCollection(listResponse: List<Artwork>) {
         if (listResponse.isNotEmpty()) {
             Log.d(TAG, "Found " + listResponse.size + " results.")
+            listResponse.map { it.type = searchText.value.toString() }
             localListArtwork.value = listResponse
             insertArtwork(listResponse)
             isLoading.value = false
@@ -70,7 +74,7 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
     private fun getArtworkOffline() {
         viewModelScope.launch {
             try {
-                localListArtwork.value = collectionRepository.getArtwork()
+                localListArtwork.value = collectionRepository.getArtwork(searchText.value ?: "")
             } catch (e: Exception) {
                 onError("Error fetching the database")
             }

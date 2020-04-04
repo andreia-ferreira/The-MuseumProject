@@ -7,8 +7,8 @@ import com.penguin.thebooklore.model.Artwork
 @Dao
 interface MuseumDao {
 
-    @Query("SELECT * FROM artwork_table")
-    suspend fun getArtwork(): List<Artwork>
+    @Query("SELECT * FROM artwork_table WHERE type = :searchText")
+    suspend fun getArtwork(searchText: String): List<Artwork>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArtwork(listArtwork : List<Artwork>)

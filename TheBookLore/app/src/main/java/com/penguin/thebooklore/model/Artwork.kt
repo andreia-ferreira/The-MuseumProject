@@ -9,5 +9,6 @@ data class Artwork(
         val id: String,
         val title: String,
         val hasImage: Boolean,
-        val imageUrl: String?
+        val imageUrl: String?,
+        var type: String
 )
