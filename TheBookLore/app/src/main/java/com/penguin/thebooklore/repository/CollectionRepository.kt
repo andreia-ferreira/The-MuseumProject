@@ -17,7 +17,7 @@ class CollectionRepository private constructor(
         private val museumDao: MuseumDao)
     :   PageKeyedDataSource<Int, Result<List<Artwork>>>() {
 
-    val databaseArtwork: LiveData<List<Artwork>> = museumDao.getArtwork()
+//    val databaseArtwork: LiveData<List<Artwork>> = museumDao.getArtwork()
 
     suspend fun refreshCollection(query: String,
                                   page: Int,
@@ -39,6 +39,10 @@ class CollectionRepository private constructor(
     // convert to suspend
     suspend fun insertArtwork(listArt: List<Artwork>) {
         museumDao.insertArtwork(listArt)
+    }
+
+    suspend fun getArtwork(): List<Artwork> {
+        return museumDao.getArtwork()
     }
 
     // TODO implement paging library

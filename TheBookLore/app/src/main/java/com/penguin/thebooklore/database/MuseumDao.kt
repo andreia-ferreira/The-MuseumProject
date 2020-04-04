@@ -8,7 +8,7 @@ import com.penguin.thebooklore.model.Artwork
 interface MuseumDao {
 
     @Query("SELECT * FROM artwork_table")
-    fun getArtwork(): LiveData<List<Artwork>>
+    suspend fun getArtwork(): List<Artwork>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArtwork(listArtwork : List<Artwork>)

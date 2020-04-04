@@ -2,6 +2,7 @@ package com.penguin.thebooklore.ui.dashboardFragment
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,7 +21,8 @@ import java.lang.Exception
 class DashboardViewModel(private val mApplication: Application) : BaseViewModel(mApplication) {
     private val museumDao : MuseumDao by lazy { MuseumDatabase.getDatabase(mApplication).museumDao() }
     private val collectionRepository: CollectionRepository by lazy { CollectionRepository.getInstance(mApplication, museumDao) }
-    val listArtwork = MutableLiveData<List<Artwork>>()
+    private val localListArtwork = MutableLiveData<List<Artwork>>()
+    val listArtwork :LiveData<List<Artwork>> = localListArtwork
     var currentPage = 1
 
     init {
@@ -37,36 +39,52 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
                         currentPage,
                         10,
                         { onSuccessGetCollection(it) },
-                        { onError(it) })
+                        { onErrorNetwork(it) })
             } catch (e: Exception) {
-                onError(e.message)
+                onErrorNetwork(e.message)
             }}
     }
 
-    fun insertArtwork(list: List<Artwork>) {
+    private fun onSuccessGetCollection(listResponse: List<Artwork>) {
+        if (listResponse.isNotEmpty()) {
+            Log.d(TAG, "Found " + listResponse.size + " results.")
+            localListArtwork.value = listResponse
+            insertArtwork(listResponse)
+            isLoading.value = false
+            return
+        }
+        onErrorNetwork(mApplication.resources.getString(R.string.error_empty_search))
+    }
+
+    private fun insertArtwork(list: List<Artwork>) {
         viewModelScope.launch {
             try {
                 collectionRepository.insertArtwork(list)
+
             } catch (e: Exception) {
                 onError("Error inserting in database")
             }
         }
     }
 
-    private fun onSuccessGetCollection(listResponse: List<Artwork>) {
-        if (listResponse.isNotEmpty()) {
-            Log.d(TAG, "Found " + listResponse.size + " results.")
-            listArtwork.value = listResponse
-            isLoading.value = false
-            insertArtwork(listResponse)
-            return
+    private fun getArtworkOffline() {
+        viewModelScope.launch {
+            try {
+                localListArtwork.value = collectionRepository.getArtwork()
+            } catch (e: Exception) {
+                onError("Error fetching the database")
+            }
         }
-        onError(mApplication.resources.getString(R.string.error_empty_search))
     }
 
     private fun onError(error: String?) {
         isError.value = Exception(error)
         isLoading.value = false
+    }
+
+    private fun onErrorNetwork(error: String?) {
+        getArtworkOffline()
+        onError(error)
     }
 
     companion object {
