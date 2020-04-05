@@ -29,7 +29,7 @@ class DashboardFragment : Fragment() {
     private val queryChangeListener by lazy {
         object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                dashboardViewModel.getCollection(query)
+                dashboardViewModel.refreshCollection(query)
                 return false
             }
 

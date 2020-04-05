@@ -13,6 +13,7 @@ object ArtObjectMapper: IMapper<NetworkArtwork, Artwork> {
         return Artwork(input.id ?: "Unknown id",
                 input.title ?: "Untitled",
                 input.hasImage ?: false,
-                input.networkWebImage?.url ?: "Unknown url")
+                input.networkWebImage?.url ?: "Unknown url",
+                "")
     }
 }

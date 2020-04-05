@@ -17,8 +17,6 @@ class CollectionRepository private constructor(
         private val museumDao: MuseumDao)
     :   PageKeyedDataSource<Int, Result<List<Artwork>>>() {
 
-//    val databaseArtwork: LiveData<List<Artwork>> = museumDao.getArtwork()
-
     suspend fun refreshCollection(query: String,
                                   page: Int,
                                   itemsPerPage: Int,

@@ -24,13 +24,13 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
     private val localListArtwork = MutableLiveData<List<Artwork>>()
     val listArtwork :LiveData<List<Artwork>> = localListArtwork
     var currentPage = 1
-    private val searchText by lazy { MutableLiveData<String>("painting") }
+    private val searchText by lazy { MutableLiveData("painting") }
 
     init {
-        getCollection(searchText.value)
+        refreshCollection(searchText.value)
     }
 
-    fun getCollection(query: String?) {
+    fun refreshCollection(query: String?) {
         isLoading.value = true
         searchText.value = query
 
@@ -45,16 +45,15 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
                         { onErrorNetwork(it) })
             } catch (e: Exception) {
                 onErrorNetwork(e.message)
-            }}
+            }
+        }
     }
 
     private fun onSuccessGetCollection(listResponse: List<Artwork>) {
         if (listResponse.isNotEmpty()) {
-            Log.d(TAG, "Found " + listResponse.size + " results.")
+            Log.d(TAG, "Found ${listResponse.size} results")
             listResponse.map { it.type = searchText.value.toString() }
-            localListArtwork.value = listResponse
             insertArtwork(listResponse)
-            isLoading.value = false
             return
         }
         onErrorNetwork(mApplication.resources.getString(R.string.error_empty_search))
@@ -64,17 +63,24 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
         viewModelScope.launch {
             try {
                 collectionRepository.insertArtwork(list)
-
+                Log.d(TAG, "Inserted ${list.size} items")
+                getArtworkDatabase()
             } catch (e: Exception) {
                 onError("Error inserting in database")
             }
         }
     }
 
-    private fun getArtworkOffline() {
+    private fun getArtworkDatabase() {
         viewModelScope.launch {
             try {
                 localListArtwork.value = collectionRepository.getArtwork(searchText.value ?: "")
+                Log.d(TAG, "Fetched ${localListArtwork.value?.size} items")
+                isLoading.value = false
+                if (localListArtwork.value?.isEmpty() == true) {
+                    onError("Error fetching the database")
+                }
+
             } catch (e: Exception) {
                 onError("Error fetching the database")
             }
@@ -87,7 +93,7 @@ class DashboardViewModel(private val mApplication: Application) : BaseViewModel(
     }
 
     private fun onErrorNetwork(error: String?) {
-        getArtworkOffline()
+        getArtworkDatabase()
         onError(error)
     }
 
