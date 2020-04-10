@@ -34,7 +34,7 @@ class RepoBoundaryCallback(private val query: String, private val coroutineScope
 
         isRequestInProgress = true
         coroutineScope.launch {
-            RetrofitHelper.getCollection(query, lastRequestedPage, REQUEST_PAGE_SIZE)
+//            RetrofitHelper.getCollection(query, lastRequestedPage, REQUEST_PAGE_SIZE)
             lastRequestedPage++
         }
     }

@@ -87,7 +87,11 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
     testImplementation "androidx.room:room-testing:2.2.5"
+
     //Room + coroutines
     implementation "androidx.room:room-ktx:2.2.5"
+
+    // lottie animations
+//    implementation 'com.airbnb.android:lottie:2.5.0'
 
 }

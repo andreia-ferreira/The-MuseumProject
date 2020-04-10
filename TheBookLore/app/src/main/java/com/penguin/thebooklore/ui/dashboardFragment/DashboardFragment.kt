@@ -16,6 +16,7 @@ import com.penguin.thebooklore.R
 import com.penguin.thebooklore.databinding.FragmentDashboardBinding
 import com.penguin.thebooklore.model.Artwork
 import com.penguin.thebooklore.ui.adapter.DashboardImagesRecyclerViewAdapter
+import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 import java.util.*
 
 class DashboardFragment : Fragment() {
@@ -29,6 +30,7 @@ class DashboardFragment : Fragment() {
     private val queryChangeListener by lazy {
         object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                dashboardViewModel.showLoading()
                 dashboardViewModel.refreshCollection(query)
                 return false
             }
@@ -36,6 +38,13 @@ class DashboardFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
+        }
+    }
+
+    private val onCloseListener by lazy {
+        SearchView.OnCloseListener {
+            dashboardViewModel.refreshCollection(null)
+            true
         }
     }
 
@@ -53,6 +62,8 @@ class DashboardFragment : Fragment() {
         binding.layoutManager = layoutManager
         binding.adapter = DashboardImagesRecyclerViewAdapter(mContext, artworkList) { artwork: Artwork ->  onClickArtwork(artwork)}
         binding.searchBar.setOnQueryTextListener(queryChangeListener)
+        binding.searchBar.setOnCloseListener(onCloseListener)
+
         initObservers()
 
         return binding.root
@@ -64,16 +75,17 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initObservers() {
-        dashboardViewModel.listArtwork.observe(this, Observer { list ->
+        dashboardViewModel.listArtwork.observe(viewLifecycleOwner, Observer { list ->
             if (list != null) {
                 artworkList.clear()
                 artworkList.addAll(list)
                 binding.adapter?.notifyDataSetChanged()
+                dashboardViewModel.hideLoading()
             }
         })
 
-        dashboardViewModel.isError.observe(this, Observer {exception ->
-            exception?.message?.run{
+        dashboardViewModel.isError.observe(viewLifecycleOwner, Observer {message ->
+            message?.run{
                 Toast.makeText(mContext, this, Toast.LENGTH_LONG).show()
             }
         })

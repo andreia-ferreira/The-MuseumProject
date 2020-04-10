@@ -7,11 +7,17 @@ import androidx.lifecycle.ViewModel
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    val isError = MutableLiveData<Exception>()
     val isLoading = MutableLiveData<Boolean>()
 
     init {
-        isError.value = null
+        isLoading.value = false
+    }
+
+    fun showLoading() {
+        isLoading.value = true
+    }
+
+    fun hideLoading() {
         isLoading.value = false
     }
 
