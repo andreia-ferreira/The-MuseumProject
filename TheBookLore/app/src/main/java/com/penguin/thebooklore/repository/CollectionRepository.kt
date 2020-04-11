@@ -2,6 +2,7 @@ package com.penguin.thebooklore.repository
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.database.MuseumDao
@@ -20,14 +21,13 @@ class CollectionRepository private constructor(
         private val retrofitHelper: RetrofitHelper) {
 
     val reposErrors = MutableLiveData<String>()
-    val artwork = MutableLiveData<List<Artwork>>()
 
     suspend fun refreshCollection(query: String,
                                   itemsPerPage: Int,
                                   page: Int): Boolean {
 
         try {
-
+            reposErrors.value = null
             val response = retrofitHelper.getCollection(query, itemsPerPage, page)
 
             if (response.isSuccessful) {
@@ -36,7 +36,6 @@ class CollectionRepository private constructor(
                     Log.d(TAG, "Found ${mappedObjects.size} results")
                     mappedObjects.map { it.type = query }
                     museumDao.insertArtwork(mappedObjects)
-                    reposErrors.value = null
                 } else {
                     reposErrors.value = application.getString(R.string.error_empty_search)
                 }
@@ -52,15 +51,13 @@ class CollectionRepository private constructor(
         }
     }
 
-    suspend fun getArtworkFromDatabase(searchText: String) {
-        try {
-            artwork.value = museumDao.getArtwork(searchText)
-            Log.d(TAG, "Fetched ${artwork.value?.size} items")
+    fun getArtworkFromDatabase(searchText: String): LiveData<List<Artwork>> {
+        val fetchedData = museumDao.getArtwork(searchText)
+        Log.d(TAG, "Fetched ${fetchedData.value?.size} items")
 
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-        }
+        return fetchedData
     }
+
 
     companion object {
         private val TAG = CollectionRepository::class.java.simpleName

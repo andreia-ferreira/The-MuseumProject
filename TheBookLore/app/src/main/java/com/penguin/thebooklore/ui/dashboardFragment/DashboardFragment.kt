@@ -30,7 +30,6 @@ class DashboardFragment : Fragment() {
     private val queryChangeListener by lazy {
         object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                dashboardViewModel.showLoading()
                 dashboardViewModel.refreshCollection(query)
                 return false
             }
@@ -64,6 +63,7 @@ class DashboardFragment : Fragment() {
         binding.searchBar.setOnQueryTextListener(queryChangeListener)
         binding.searchBar.setOnCloseListener(onCloseListener)
 
+        dashboardViewModel.showLoading()
         initObservers()
 
         return binding.root
