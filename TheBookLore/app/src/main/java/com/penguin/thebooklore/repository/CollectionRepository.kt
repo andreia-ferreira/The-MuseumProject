@@ -3,7 +3,6 @@ package com.penguin.thebooklore.repository
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
 import com.penguin.thebooklore.R
 import com.penguin.thebooklore.database.MuseumDao
 import com.penguin.thebooklore.model.Artwork
@@ -18,8 +17,7 @@ import java.net.UnknownHostException
 class CollectionRepository private constructor(
         private val application: Application,
         private val museumDao: MuseumDao,
-        private val retrofitHelper: RetrofitHelper)
-    :   PageKeyedDataSource<Int, Result<List<Artwork>>>() {
+        private val retrofitHelper: RetrofitHelper) {
 
     val reposErrors = MutableLiveData<String>()
     val artwork = MutableLiveData<List<Artwork>>()
@@ -62,18 +60,6 @@ class CollectionRepository private constructor(
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
         }
-    }
-
-    // TODO implement paging library
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Result<List<Artwork>>>) {
-    }
-
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Result<List<Artwork>>>) {
-
-    }
-
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Result<List<Artwork>>>) {
-
     }
 
     companion object {
