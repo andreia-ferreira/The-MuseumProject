@@ -10,9 +10,9 @@ import retrofit2.http.Query
 interface IRetrofitClient {
 
     @GET("en/collection")
-    suspend fun getCollection(@Query("key") key: String,
+    fun getCollection(@Query("key") key: String,
                       @Query("type") type: String,
                       @Query("ps") resultsPerPage: Int,
                       @Query("p") page: Int)
-            : Response<CollectionResponse?>
+            : Call<CollectionResponse>
 }

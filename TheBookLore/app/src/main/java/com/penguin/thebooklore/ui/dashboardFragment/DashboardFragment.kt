@@ -63,7 +63,6 @@ class DashboardFragment : Fragment() {
         binding.searchBar.setOnQueryTextListener(queryChangeListener)
         binding.searchBar.setOnCloseListener(onCloseListener)
 
-        dashboardViewModel.showLoading()
         initObservers()
 
         return binding.root
@@ -80,7 +79,6 @@ class DashboardFragment : Fragment() {
                 artworkList.clear()
                 artworkList.addAll(list)
                 binding.adapter?.notifyDataSetChanged()
-                dashboardViewModel.hideLoading()
             }
         })
 

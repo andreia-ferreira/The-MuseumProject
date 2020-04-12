@@ -11,7 +11,7 @@ interface MuseumDao {
     fun getArtwork(searchText: String): LiveData<List<Artwork>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArtwork(listArtwork : List<Artwork>)
+    fun insertArtwork(listArtwork : List<Artwork>)
 
     @Query("DELETE FROM artwork_table")
     fun deleteAllArtwork()
